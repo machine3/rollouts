@@ -369,7 +369,11 @@ func (r *ControllerFinder) GetReplicaSetsForDeployment(obj *apps.Deployment) ([]
 	var rss []*apps.ReplicaSet
 	for i := range rsList.Items {
 		rs := rsList.Items[i]
-		if !rs.DeletionTimestamp.IsZero() || (rs.Spec.Replicas != nil && *rs.Spec.Replicas == 0) {
+		stableRevisionHash := obj.Labels[rolloutv1alpha1.DeploymentStableRevisionLabel]
+		podTemplateHash := rs.Labels[apps.DefaultDeploymentUniqueLabelKey]
+		isStableRS := stableRevisionHash != "" && podTemplateHash == stableRevisionHash
+		// Stable RS replicas may be 0, but it should be included in the result.
+		if !rs.DeletionTimestamp.IsZero() || (rs.Spec.Replicas != nil && *rs.Spec.Replicas == 0 && !isStableRS) {
 			continue
 		}
 		if ref := metav1.GetControllerOf(&rs); ref != nil {
