@@ -201,6 +201,9 @@ type RolloutStatus struct {
 
 	// observedGeneration is the most recent generation observed for this Rollout.
 	ObservedGeneration int64 `json:"observedGeneration,omitempty"`
+	// WorkloadStatus describes the state of the workload.
+	// +optional
+	WorkloadStatus *WorkloadStatus `json:"workloadStatus,omitempty"`
 	// Canary describes the state of the canary rollout
 	// +optional
 	CanaryStatus *CanaryStatus `json:"canaryStatus,omitempty"`
@@ -257,6 +260,21 @@ const (
 	// Terminating Reason
 	TerminatingReasonInTerminating = "InTerminating"
 	TerminatingReasonCompleted     = "Completed"
+)
+
+type WorkloadStatus struct {
+	// WorkloadState is the state of the workload.
+	WorkloadState WorkloadState `json:"workloadState,omitempty"`
+	// Replicas is the number of desired replicas.
+	Replicas int32 `json:"replicas,omitempty"`
+}
+
+type WorkloadState string
+
+const (
+	WorkloadStateNormal   WorkloadState = "Normal"
+	WorkloadStateIgnore   WorkloadState = "Ignore"
+	WorkloadStateNotFound WorkloadState = "NotFound"
 )
 
 // CanaryStatus status fields that only pertain to the canary rollout

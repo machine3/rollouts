@@ -374,6 +374,17 @@ spec:
                 description: BlueGreenStatus *BlueGreenStatus `json:"blueGreenStatus,omitempty"`
                   Phase is the rollout phase.
                 type: string
+              workloadStatus:
+                description: WorkloadStatus describes the state of the workload.
+                properties:
+                  replicas:
+                    description: Replicas is the number of desired replicas.
+                    format: int32
+                    type: integer
+                  workloadState:
+                    description: WorkloadState is the state of the workload.
+                    type: string
+                type: object
             type: object
         type: object
     served: true

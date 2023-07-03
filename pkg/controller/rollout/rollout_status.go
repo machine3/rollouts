@@ -62,6 +62,9 @@ func (r *RolloutReconciler) calculateRolloutStatus(rollout *v1alpha1.Rollout) (r
 			ObservedGeneration: rollout.Generation,
 			Phase:              v1alpha1.RolloutPhaseInitial,
 			Message:            "Workload Not Found",
+			WorkloadStatus: &v1alpha1.WorkloadStatus{
+				WorkloadState: v1alpha1.WorkloadStateNotFound,
+			},
 		}
 		klog.Infof("rollout(%s/%s) workload not found, and reset status be Initial", rollout.Namespace, rollout.Name)
 		return false, newStatus, nil
@@ -71,6 +74,13 @@ func (r *RolloutReconciler) calculateRolloutStatus(rollout *v1alpha1.Rollout) (r
 		klog.Infof("rollout(%s/%s) workload status is inconsistent, then wait a moment", rollout.Namespace, rollout.Name)
 		return true, nil, nil
 	}
+
+	// update workload status
+	if newStatus.WorkloadStatus == nil {
+		newStatus.WorkloadStatus = &v1alpha1.WorkloadStatus{}
+	}
+	newStatus.WorkloadStatus.WorkloadState = v1alpha1.WorkloadStateNormal
+	newStatus.WorkloadStatus.Replicas = workload.Replicas
 
 	// update workload generation to canaryStatus.ObservedWorkloadGeneration
 	// rollout is a target ref bypass, so there needs to be a field to identify the rollout execution process or results,
