@@ -24,7 +24,7 @@ import (
 	"reflect"
 
 	webhookutil "github.com/openkruise/rollouts/pkg/webhook/util"
-	admissionregistrationv1 "k8s.io/api/admissionregistration/v1"
+	admissionregistrationv1 "k8s.io/api/admissionregistration/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	clientset "k8s.io/client-go/kubernetes"
 	"k8s.io/klog/v2"
@@ -37,11 +37,11 @@ const (
 )
 
 func Ensure(kubeClient clientset.Interface, handlers map[string]admission.Handler, caBundle []byte) error {
-	mutatingConfig, err := kubeClient.AdmissionregistrationV1().MutatingWebhookConfigurations().Get(context.TODO(), MutatingWebhookConfigurationName, metav1.GetOptions{})
+	mutatingConfig, err := kubeClient.AdmissionregistrationV1beta1().MutatingWebhookConfigurations().Get(context.TODO(), MutatingWebhookConfigurationName, metav1.GetOptions{})
 	if err != nil {
 		return fmt.Errorf("not found MutatingWebhookConfiguration %s", MutatingWebhookConfigurationName)
 	}
-	validatingConfig, err := kubeClient.AdmissionregistrationV1().ValidatingWebhookConfigurations().Get(context.TODO(), ValidatingWebhookConfigurationName, metav1.GetOptions{})
+	validatingConfig, err := kubeClient.AdmissionregistrationV1beta1().ValidatingWebhookConfigurations().Get(context.TODO(), ValidatingWebhookConfigurationName, metav1.GetOptions{})
 	if err != nil {
 		return fmt.Errorf("not found ValidatingWebhookConfiguration %s", ValidatingWebhookConfigurationName)
 	}
@@ -104,13 +104,13 @@ func Ensure(kubeClient clientset.Interface, handlers map[string]admission.Handle
 	validatingConfig.Webhooks = validatingWHs
 
 	if !reflect.DeepEqual(mutatingConfig, oldMutatingConfig) {
-		if _, err := kubeClient.AdmissionregistrationV1().MutatingWebhookConfigurations().Update(context.TODO(), mutatingConfig, metav1.UpdateOptions{}); err != nil {
+		if _, err := kubeClient.AdmissionregistrationV1beta1().MutatingWebhookConfigurations().Update(context.TODO(), mutatingConfig, metav1.UpdateOptions{}); err != nil {
 			return fmt.Errorf("failed to update %s: %v", MutatingWebhookConfigurationName, err)
 		}
 	}
 
 	if !reflect.DeepEqual(validatingConfig, oldValidatingConfig) {
-		if _, err := kubeClient.AdmissionregistrationV1().ValidatingWebhookConfigurations().Update(context.TODO(), validatingConfig, metav1.UpdateOptions{}); err != nil {
+		if _, err := kubeClient.AdmissionregistrationV1beta1().ValidatingWebhookConfigurations().Update(context.TODO(), validatingConfig, metav1.UpdateOptions{}); err != nil {
 			return fmt.Errorf("failed to update %s: %v", ValidatingWebhookConfigurationName, err)
 		}
 	}

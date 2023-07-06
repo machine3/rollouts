@@ -31,7 +31,7 @@ import (
 	utilfeature "github.com/openkruise/rollouts/pkg/util/feature"
 	"github.com/openkruise/rollouts/pkg/webhook"
 	"github.com/spf13/pflag"
-	admissionregistrationv1 "k8s.io/api/admissionregistration/v1"
+	admissionregistrationv1 "k8s.io/api/admissionregistration/v1beta1"
 	"k8s.io/apimachinery/pkg/runtime"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"

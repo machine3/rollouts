@@ -3,7 +3,7 @@ package deployment
 import (
 	"context"
 
-	admissionregistrationv1 "k8s.io/api/admissionregistration/v1"
+	admissionregistrationv1 "k8s.io/api/admissionregistration/v1beta1"
 	appsv1 "k8s.io/api/apps/v1"
 	"k8s.io/client-go/util/workqueue"
 	"k8s.io/klog/v2"
