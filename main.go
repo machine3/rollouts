@@ -94,7 +94,7 @@ func main() {
 		HealthProbeBindAddress: probeAddr,
 		LeaderElection:         enableLeaderElection,
 		LeaderElectionID:       "71ddec2c.kruise.io",
-		NewClient:              utilclient.NewClient,
+		//NewClient:              utilclient.NewClient,
 	})
 	if err != nil {
 		setupLog.Error(err, "unable to start manager")

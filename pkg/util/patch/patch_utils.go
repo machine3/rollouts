@@ -22,8 +22,8 @@ import (
 	"github.com/openkruise/rollouts/pkg/util"
 	apps "k8s.io/api/apps/v1"
 	v1 "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 const (
@@ -42,7 +42,7 @@ func (s *CommonPatch) Type() types.PatchType {
 }
 
 // Data implements Patch.
-func (s *CommonPatch) Data(_ client.Object) ([]byte, error) {
+func (s *CommonPatch) Data(_ runtime.Object) ([]byte, error) {
 	return []byte(s.String()), nil
 }
 

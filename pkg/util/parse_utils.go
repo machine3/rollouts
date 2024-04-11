@@ -199,16 +199,16 @@ func ParseWorkloadStatus(object client.Object) *WorkloadStatus {
 			StableRevision:       o.Status.CurrentRevision,
 		}
 
-	case *apps.StatefulSet:
-		return &WorkloadStatus{
-			Replicas:           o.Status.Replicas,
-			ReadyReplicas:      o.Status.ReadyReplicas,
-			AvailableReplicas:  o.Status.AvailableReplicas,
-			UpdatedReplicas:    o.Status.UpdatedReplicas,
-			ObservedGeneration: o.Status.ObservedGeneration,
-			UpdateRevision:     o.Status.UpdateRevision,
-			StableRevision:     o.Status.CurrentRevision,
-		}
+	//case *apps.StatefulSet:
+	//	return &WorkloadStatus{
+	//		Replicas:           o.Status.Replicas,
+	//		ReadyReplicas:      o.Status.ReadyReplicas,
+	//		AvailableReplicas:  o.Status.AvailableReplicas,
+	//		UpdatedReplicas:    o.Status.UpdatedReplicas,
+	//		ObservedGeneration: o.Status.ObservedGeneration,
+	//		UpdateRevision:     o.Status.UpdateRevision,
+	//		StableRevision:     o.Status.CurrentRevision,
+	//	}
 
 	case *appsv1beta1.StatefulSet:
 		return &WorkloadStatus{
